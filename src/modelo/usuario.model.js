@@ -1,17 +1,13 @@
 const { DB } = require("../config/db");
 const format = require("pg-format");
 const { errorMiddleware } = require("../middlewares/errorsManager");
-const bcrypt = require("bcrypt");
 
-const verificarCredenciales = async (email, pass) => { 
+const verificarCredenciales = async (email, pass) => {
   try {
     const SQLQuery = format(
-      `
-                SELECT * FROM usuario
-                WHERE email = %L AND pass = %L
-            `,
+      `SELECT * FROM usuario WHERE email = %L AND pass = %L`,
       email,
-      pass 
+      pass
     );
 
     const {
@@ -29,18 +25,18 @@ const verificarCredenciales = async (email, pass) => {
   }
 };
 
-const login = async (email, pass) => { 
-  try {   
+const login = async (email, pass) => {
+  try {
     const { rows } = await DB.query(
       "SELECT * FROM usuario WHERE email = $1 AND pass = $2",
-      [email, pass] 
+      [email, pass]
     );
 
     if (rows.length === 0) {
       throw new Error("AUTH_ERROR");
     }
 
-    return rows[0]; 
+    return rows[0];
   } catch (error) {
     console.error("Error en el login:", error.message);
     throw new Error("AUTH_ERROR");
@@ -102,9 +98,21 @@ const register = async (nombre, apellido, email, pass, fono) => {
   }
 };
 
+const obtenerDatosUsuarioPorProducto = async (idProducto) => {
+  const query = `
+    SELECT u.nombre, u.apellido, u.email, u.fono
+    FROM usuario u
+    JOIN productos p ON u.id_usuario = p.id_usuario
+    WHERE p.id_producto = $1;
+  `;
+  const { rows } = await DB.query(query, [idProducto]);
+  return rows[0];
+};
+
 module.exports = {
   login,
   verificarCredenciales,
   existe,
   register,
+  obtenerDatosUsuarioPorProducto,
 };

@@ -88,7 +88,7 @@ const HandleObtenerProductosById = async (req, res) => {
   }
 };
 
-// Obtener productos por Marca (Requiere autenticación)
+// Obtener productos por Marca 
 const HandleObtenerProductosByMarca = async (req, res) => {
   try {
     const { marca } = req.params;
@@ -99,7 +99,7 @@ const HandleObtenerProductosByMarca = async (req, res) => {
   }
 };
 
-// Obtener productos por Tipo (Requiere autenticación)
+// Obtener productos por Tipo 
 const HandleObtenerProductosByTipo = async (req, res) => {
   try {
     const { tipo } = req.params;
@@ -110,7 +110,7 @@ const HandleObtenerProductosByTipo = async (req, res) => {
   }
 };
 
-// Obtener productos por Cuerpo (Requiere autenticación)
+// Obtener productos por Cuerpo 
 const HandleObtenerProductosByCuerpo = async (req, res) => {
   try {
     const { cuerpo } = req.params;
