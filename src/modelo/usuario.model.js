@@ -72,7 +72,7 @@ const register = async (nombre, apellido, email, pass, fono) => {
   try {
     const SQLQuery = format(
       `
-                INSERT INTO usuario (nombre, apellido, email, "pass", fono )
+                INSERT INTO usuario (nombre, apellido, email, pass, fono )
                 VALUES (%L, %L, %L, %L, %L)
                 RETURNING *
             `,
