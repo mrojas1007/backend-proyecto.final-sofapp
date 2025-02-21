@@ -9,6 +9,10 @@ const DB = new Pool({
   password: DB_PASS,
   database: DB_NAME,
   allowExitOnIdle: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  
 });
 
 module.exports = { DB };
