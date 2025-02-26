@@ -2,12 +2,12 @@ const { DB } = require("../config/db");
 const format = require("pg-format");
 // const { errorMiddleware } = require("../middlewares/errorsManager");
 
-const obtenerTodosLosProductos = async () => {
+const getAllProducts = async () => {
   const result = await DB.query("SELECT * FROM productos;");
   return result.rows;
 };
 
-const InsertarProducto = async (producto) => {
+const InsertProduct = async (producto) => {
   const {
     id_usuario,
     nombre,
@@ -38,7 +38,7 @@ const InsertarProducto = async (producto) => {
   return result.rows[0];
 };
 // obtener productos por id usuario
-const obtenerProductosByUsuario = async (id_usuario) => {
+const getProductsByUser = async (id_usuario) => {
   const { rows } = await DB.query(
     "SELECT * FROM productos WHERE id_usuario = $1;",
     [id_usuario]
@@ -46,7 +46,7 @@ const obtenerProductosByUsuario = async (id_usuario) => {
   return rows;
 };
 
-const obtenerProductoById = async (id) => {
+const getProductById = async (id) => {
   const productoId = parseInt(id, 10);
   if (isNaN(productoId)) return null; 
 
@@ -54,22 +54,22 @@ const obtenerProductoById = async (id) => {
   return rows[0] || null;
 };
 
-const obtenerProductosByMarca = async (marca) => {
+const getProductsByBrand = async (marca) => {
   const { rows } = await DB.query("SELECT * FROM productos WHERE marca ILIKE  $1;", [marca]);
   return rows;
 };
 
-const obtenerProductosByTipo = async (tipo) => {
+const getProductsByType = async (tipo) => {
   const { rows } = await DB.query("SELECT * FROM productos WHERE tipo ILIKE $1;", [tipo]);
   return rows;
 };
 
-const obtenerProductosByCuerpo = async (cuerpo) => {
+const getProductsByBody = async (cuerpo) => {
   const { rows } = await DB.query("SELECT * FROM productos WHERE cuerpo = $1;", [cuerpo]);
   return rows;
 };
 
-const obtenerUltimos5Productos = async () => {
+const getLatest5Products = async () => {
   try {
     const { rows } = await DB.query(
       "SELECT * FROM productos ORDER BY id_producto DESC LIMIT 5"
@@ -82,12 +82,12 @@ const obtenerUltimos5Productos = async () => {
 };
 
 module.exports = {
-  obtenerTodosLosProductos,
-  InsertarProducto,
-  obtenerProductoById,
-  obtenerProductosByMarca,
-  obtenerProductosByTipo,
-  obtenerProductosByCuerpo,
-  obtenerProductosByUsuario,
-  obtenerUltimos5Productos,
+  getAllProducts,
+  InsertProduct,
+  getProductById,
+  getProductsByBrand,
+  getProductsByType,
+  getProductsByBody,
+  getProductsByUser,
+  getLatest5Products,
 };
