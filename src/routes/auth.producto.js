@@ -1,25 +1,25 @@
 const { Router } = require("express");
 const {
-  HandleObtenerProductos,
-  HandleCrearProducto,
-  HandleObtenerProductosById,
-  HandleObtenerProductosByMarca,
-  HandleObtenerProductosByTipo,
-  HandleObtenerProductosByCuerpo,
-  verificarToken,
-  HandleObtenerProductosByUsuario,
-  HandleObtener5UltimosProductos,
+  HandleGetProducts,
+  HandleNewProduct,
+  HandleGetProductById,
+  HandleGetProductsByBrand,
+  HandleGetProductsByType,
+  HandleGetProductsByBody,
+  validateToken,
+  HandleGetProductsByUser,
+  HandleGetLatest5Products,
 } = require("../controller/producto.controller");
 
 const router = Router();  
 
-router.get("/todos", HandleObtenerProductos);
-router.get("/:id([0-9]+)", HandleObtenerProductosById);
-router.get("/marca/:marca", HandleObtenerProductosByMarca);
-router.get("/tipo/:tipo", HandleObtenerProductosByTipo);
-router.get("/cuerpo/:cuerpo", HandleObtenerProductosByCuerpo);
-router.get("/cincoultimos", HandleObtener5UltimosProductos);
-router.post("/agregar", verificarToken, HandleCrearProducto);
-router.get("/usuario/:id_usuario", HandleObtenerProductosByUsuario);
+router.get("/todos", HandleGetProducts);
+router.get("/:id([0-9]+)", HandleGetProductById);
+router.get("/marca/:marca", HandleGetProductsByBrand);
+router.get("/tipo/:tipo", HandleGetProductsByType);
+router.get("/cuerpo/:cuerpo", HandleGetProductsByBody);
+router.get("/cincoultimos", HandleGetLatest5Products);
+router.post("/agregar", validateToken, HandleNewProduct);
+router.get("/usuario/:id_usuario", HandleGetProductsByUser);
 
 module.exports = router;

@@ -2,7 +2,7 @@ const { DB } = require("../config/db");
 const format = require("pg-format");
 const { errorMiddleware } = require("../middlewares/errorsManager");
 
-const verificarCredenciales = async (email, pass) => {
+const validateCredentials = async (email, pass) => {
   try {
     const SQLQuery = format(
       `SELECT * FROM usuario WHERE email = %L AND pass = %L`,
@@ -43,7 +43,7 @@ const login = async (email, pass) => {
   }
 };
 
-const existe = async (email) => {
+const checkIfExists = async (email) => {
   try {
     const SQLQuery = format(
       `
@@ -98,7 +98,7 @@ const register = async (nombre, apellido, email, pass, fono) => {
   }
 };
 
-const obtenerDatosUsuarioPorProducto = async (idProducto) => {
+const getUserDataByProduct = async (idProducto) => {
   const query = `
     SELECT u.nombre, u.apellido, u.email, u.fono
     FROM usuario u
@@ -111,8 +111,8 @@ const obtenerDatosUsuarioPorProducto = async (idProducto) => {
 
 module.exports = {
   login,
-  verificarCredenciales,
-  existe,
+  validateCredentials,
+  checkIfExists,
   register,
-  obtenerDatosUsuarioPorProducto,
+  getUserDataByProduct,
 };
