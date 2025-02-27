@@ -99,15 +99,27 @@ const register = async (nombre, apellido, email, pass, fono) => {
 };
 
 const getUserDataByProduct = async (idProducto) => {
-  const query = `
-    SELECT u.nombre, u.apellido, u.email, u.fono
-    FROM usuario u
-    JOIN productos p ON u.id_usuario = p.id_usuario
-    WHERE p.id_producto = $1;
-  `;
-  const { rows } = await DB.query(query, [idProducto]);
-  return rows[0];
+  try {
+    const query = `
+      SELECT u.nombre, u.apellido, u.email, u.fono
+      FROM usuario u
+      JOIN productos p ON u.id_usuario = p.id_usuario
+      WHERE p.id_producto = $1;
+    `;
+    
+    const { rows } = await DB.query(query, [idProducto]);
+
+    if (rows.length === 0) {
+      throw new Error("No se encontró el usuario asociado a este producto.");
+    }
+
+    return rows[0];
+  } catch (error) {
+    console.error("Error en getUserDataByProduct:", error.message);
+    return [];
+  }
 };
+
 
 module.exports = {
   login,
