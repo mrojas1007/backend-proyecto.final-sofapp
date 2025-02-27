@@ -1,6 +1,6 @@
 const { signToken } = require("../helpers/jwt");
 const Auth = require("../modelo/usuario.model");
-const { getUserDataByProduct } = require("../modelo/usuario.model");
+const Model = require("../modelo/usuario.model");
 
 const handleLogin = async (req, res, next) => {
   try {
@@ -46,7 +46,7 @@ const getUserDataByProduct = async (req, res) => {
   const { idProducto } = req.params;
 
   try {
-    const usuario = await getUserDataByProduct(idProducto);
+    const usuario = await Model.getUserDataByProduct(idProducto);
     if (!usuario) {
       return res.status(404).json({ mensaje: "No se encontraron datos para este producto" });
     }
@@ -60,5 +60,5 @@ const getUserDataByProduct = async (req, res) => {
 module.exports = {
   handleLogin,
   handleRegister,
-  getUserDataByProduct,
+  getUserDataByProduct, 
 };
