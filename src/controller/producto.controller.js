@@ -3,16 +3,7 @@ const { signToken } = require("../helpers/jwt");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = process.env;
 const { errorMiddleware } = require("../middlewares/errorsManager");
-const {
-  getAllProducts,
-  InsertProduct,
-  getProductById,
-  getProductsByBrand,
-  getProductsByType,
-  getProductsByBody,
-  getProductsByUser,
-  getLatest5Products,
-} = require("../modelo/producto.model");
+const Model = require("../modelo/producto.model");
 
 const validateToken = (req, res, next) => {
   const token = req.header("Authorization");
@@ -33,7 +24,7 @@ const validateToken = (req, res, next) => {
 // Obtener todos los producto usuarios
 const HandleGetProducts = async (req, res) => {
   try {
-    const productos = await getAllProducts();
+    const productos = await Model.getAllProducts();
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json({ error: "Error al obtener los productos." });
@@ -48,7 +39,7 @@ const HandleNewProduct = async (req, res) => {
   }
 
   try {
-    const response = await InsertProduct(req.body);
+    const response = await Model.InsertProduct(req.body);
     res.status(201).json({ msg: "Producto creado con éxito!", data: response });
   } catch (error) {
     console.error("Error en HandleCrearProducto:", error.message || error);
@@ -59,7 +50,7 @@ const HandleNewProduct = async (req, res) => {
 const HandleGetProductsByUser = async (req, res) => {
   try {
     const { id_usuario } = req.params; // Asegúrate de que el frontend pase el id_usuario
-    const productos = await getProductsByUser(id_usuario);
+    const productos = await Model.getProductsByUser(id_usuario);
 
     if (!productos.length) {
       return res.status(404).json({ msg: "No se encontraron productos para este usuario." });
@@ -75,7 +66,7 @@ const HandleGetProductsByUser = async (req, res) => {
 const HandleGetProductById = async (req, res) => {
   try {
     const { id } = req.params;
-    const producto = await getProductById(id);
+    const producto = await Model.getProductById(id);
 
     if (!producto) {
       return res.status(404).json({ msg: "No se encontró el producto con ese ID o el formato es incorrecto." });
@@ -92,7 +83,7 @@ const HandleGetProductById = async (req, res) => {
 const HandleGetProductsByBrand = async (req, res) => {
   try {
     const { marca } = req.params;
-    const productos = await getProductsByBrand(marca);
+    const productos = await Model.getProductsByBrand(marca);
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json({ msg: "Error al obtener productos por marca.", error: error.message });
@@ -103,7 +94,7 @@ const HandleGetProductsByBrand = async (req, res) => {
 const HandleGetProductsByType = async (req, res) => {
   try {
     const { tipo } = req.params;
-    const productos = await getProductsByType(tipo);
+    const productos = await Model.getProductsByType(tipo);
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json({ msg: "Error al obtener productos por tipo.", error: error.message });
@@ -114,7 +105,7 @@ const HandleGetProductsByType = async (req, res) => {
 const HandleGetProductsByBody = async (req, res) => {
   try {
     const { cuerpo } = req.params;
-    const productos = await getProductsByBody(cuerpo);
+    const productos = await Model.getProductsByBody(cuerpo);
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json({ msg: "Error al obtener productos por cuerpo.", error: error.message });
@@ -123,7 +114,7 @@ const HandleGetProductsByBody = async (req, res) => {
 
 const HandleGetLatest5Products = async (req, res) => {
   try {
-    const productos = await getLatest5Products();
+    const productos = await Model.getLatest5Products();
     res.status(200).json(productos);
   } catch (error) {
     console.error("Error en la petición:", error.message);
